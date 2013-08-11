@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from tutors import views
+from bodhanet import views
 
 urlpatterns = patterns('',
 	url(r'^(?P<user_id>\d+)/$', views.home, name='home'),

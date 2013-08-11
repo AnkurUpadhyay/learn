@@ -70,7 +70,7 @@ function fetch_course_sections(){
 	$.ajax({
 		crossDomain: false,
 		type: "GET",
-		url: "{% url 'tutors:fetch_course_sections' course.id %}",
+		url: "{% url 'bodhanet:fetch_course_sections' course.id %}",
 		dataType: 'json',
 		success: function(data){
 				var obj;
@@ -92,7 +92,7 @@ function create_new_lecture(){
 </script>
 </head>
 <body>
-<form id="create_new_lecture" title="Create Lecture" style="display:none;" action="{% url 'tutors:create_new_lecture' course.id %}" method="post" enctype="multipart/form-data">
+<form id="create_new_lecture" title="Create Lecture" style="display:none;" action="{% url 'bodhanet:create_new_lecture' course.id %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<table>
 	<tr><td>Lecture Name: </td><td><input type="text" name="lecture_name"></input></td></tr>

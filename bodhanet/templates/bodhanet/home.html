@@ -70,7 +70,7 @@ function fetch_course_categories(){
 	$.ajax({
 		crossDomain: false,
 		type: "GET",
-		url: "{% url 'tutors:fetch_course_categories' %}",
+		url: "{% url 'bodhanet:fetch_course_categories' %}",
 		dataType: 'json',
 		success: function(data){
 				var obj;
@@ -97,7 +97,7 @@ function create_new_course(event){
 	<ul id="courses_created" name="courses_created">
 		{% for course in course_created_list %}
 			<li>
-				<h5><a href="{% url 'tutors:course_home' course.id %}">{{ course.course_name }}</a></h5>
+				<h5><a href="{% url 'bodhanet:course_home' course.id %}">{{ course.course_name }}</a></h5>
 			</li>
 		{% endfor %}
 	</ul>	
@@ -105,7 +105,7 @@ function create_new_course(event){
 	<h5>You haven't created any courses</h5>
 {% endif %}
 </ul>
-<form id="create_new_course" title="Create Course" style="display:none;" action="{% url 'tutors:create_new_course' user_id %}" method="post" enctype="multipart/form-data">
+<form id="create_new_course" title="Create Course" style="display:none;" action="{% url 'bodhanet:create_new_course' user_id %}" method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	<table>
 	<tr><td>Course Name: </td><td><input type="text" name="course_name"></input></td></tr>

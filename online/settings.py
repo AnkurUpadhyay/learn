@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tutor_dev',                      # Or path to database file if using sqlite3.
+        'NAME': 'bodhanet_dev',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'Sm@0512neha',
@@ -65,7 +65,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/home/ankur/Documents/My-Projects/online/tutors/static/'
+STATIC_URL = '/home/ankur/Documents/My-Projects/online/bodhanet/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -124,7 +124,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'tutors',
+    'bodhanet',
 )
 
 # A sample logging configuration. The only tangible logging

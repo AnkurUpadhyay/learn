@@ -4,10 +4,10 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from User.Insert_Into_Database import Insert_Into_Database
-from User.Fetch_From_Database import Fetch_From_Database
-from Course.Course_Fetch import Course_Fetch
-from Course.Course_Insert import Course_Insert
+from Insert_Into_Database import Insert_Into_Database
+from Fetch_From_Database import Fetch_From_Database
+from Course_Fetch import Course_Fetch
+from Course_Insert import Course_Insert
 from django.utils import simplejson
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
@@ -23,7 +23,7 @@ def home(request, user_id):
 	course_created_list=fetch.fetch_created_courses(user_id)
 	maximum_created_course_id=course_created_list[0].id
 	context={'user_id': user_id, 'course_created_list': course_created_list, 'maximum_created_course_id': maximum_created_course_id}
-	return render(request, 'tutors/home.html', context)
+	return render(request, 'bodhanet/home.html', context)
 	
 def course_home(request, course_id):
 	course_requested=Course_Fetch()
@@ -31,7 +31,7 @@ def course_home(request, course_id):
 	course_creator=course_requested.fetch_course_creator(course_id)
 	course_lectures=course_requested.fetch_course_lectures(course_id)
 	context={'course': course, 'course_lectures': course_lectures}
-	return render(request, 'tutors/course.html', context)
+	return render(request, 'bodhanet/course.html', context)
 
 def create_new_course(request, user_id):
 	insert=Insert_Into_Database()
@@ -40,7 +40,7 @@ def create_new_course(request, user_id):
 	course_category=request.POST['course_category']
 	course_introduction_video=request.FILES['course_introduction_video']
 	insert.create_new_course(course_created_by=user_id, course_name=course_name, course_category_name=course_category, course_description=course_description, course_introduction_video=course_introduction_video)
-	return HttpResponseRedirect(reverse('tutors:home', args=[user_id]))
+	return HttpResponseRedirect(reverse('bodhanet:home', args=[user_id]))
 	
 def create_new_lecture(request, course_id):
 	course_insert=Course_Insert()
@@ -56,7 +56,7 @@ def create_new_lecture(request, course_id):
 	else:
 		print("user uploading lecture in existing course section")
 		course_insert.create_new_lecture(lecture_section=lecture_section, lecture_name=lecture_name, lecture_description=lecture_description, lecture_video=lecture_video)
-	return HttpResponseRedirect(reverse('tutors:course_home', args=[course_id]))
+	return HttpResponseRedirect(reverse('bodhanet:course_home', args=[course_id]))
 			
 def fetch_course_categories(request):
 	fetch=Fetch_From_Database()

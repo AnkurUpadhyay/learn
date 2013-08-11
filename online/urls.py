@@ -6,5 +6,5 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^tutors/', include('tutors.urls', namespace="tutors")),
+    url(r'^bodhanet/', include('bodhanet.urls', namespace="bodhanet")),
 )
