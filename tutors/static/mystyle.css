@@ -1,0 +1,152 @@
+.topbar-lecture {
+background-color: #4d4d4d;
+height:3em;
+width:100%;
+margin: 5;
+border-bottom: 1px solid rgba(0,0,0,0.1);
+-webkit-box-shadow: inset 0 -6px 18px 0 rgba(0,0,0,0.25);
+box-shadow: inset 0 -6px 18px 0 rgba(0,0,0,0.25);
+}
+
+.logo-div {
+width:16%;
+height:100%;
+float:left;
+}
+
+.logo-link {
+width:100%;
+height:100%;
+background-image:url('images/logo.png');
+background-repeat: no-repeat;
+background-size: auto;
+background-origin: padding-box;
+box-sizing: border-box;
+display: inline-block;
+}
+
+.topbanner {
+margin:5;
+width: 100%;
+overflow: hidden;
+border-bottom: 1px solid #bcbec0;
+height: 6em;
+-webkit-box-shadow: 0 0 1px 1px #ccc;
+box-shadow: 0 0 1px 1px #ccc;
+position: relative;
+overflow: hidden;
+background-color: #fff;
+
+}
+
+.topbanner-left {
+
+width:30%;
+height:100%;
+line-height:150%;
+float:left;
+color: #8c1515;
+font-size:2.5em;
+
+}
+
+.tbleft-anchor{
+color: #8c1515;
+text-decoration: none;
+}
+
+.topbanner-right {
+width:70%;
+height:100%;
+float:right;
+color: #8c1515;
+font-size:1.7em;
+
+}
+
+.tbright-top{
+padding:0.5em;
+margin-left:5em;
+line-height:50%;
+font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.tbright-bottom{
+line-height:100%;
+margin-left:5.5em;
+color: #000000;
+}
+
+.full-body{
+height:100%;
+width:100%;
+margin:5;
+
+}
+
+.nav-bar{
+height:100%;
+width:18%;
+box-sizing: border-box;
+color: rgb(51, 51, 51);
+display: block;
+font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+}
+
+.nav-bar-list{
+box-sizing: border-box;
+color: rgb(51, 51, 51);
+display: block;
+width:100%;
+float:left;
+margin-left:-2.6em;
+}
+
+.nav-bar-item{
+list-style: none;
+min-height: 10px;
+}
+
+.list-link {
+color: #8c1515;
+padding: 10px 9px 9px 9px;
+margin-top: -1px;
+margin-bottom: 0;
+border: 1px solid #e2e2e2;
+font-size: 14px;
+background-color: #ccc;
+background-color: rgba(128,128,128,0.05);
+display: block;
+text-decoration: none;
+font-weight: bold;
+}
+
+a.list-link:hover {color:rgb(60, 140, 211); }
+
+.lecture-body{
+width:82%;
+height:100%;
+float:right;
+margin-top:-26em;
+padding:0.5em;
+}
+
+.top-video-heading{
+margin-left:0.5em;
+}
+
+.arrow-hor{
+padding-left:25px;
+height:2em;
+width:2em;
+background-image:url('images/arrow_horizontal.png');
+}
+
+
+
+body {
+font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+font-size: 14px;
+line-height: 21px;
+color: #333;
+}

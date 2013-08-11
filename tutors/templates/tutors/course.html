@@ -1,0 +1,170 @@
+<html>
+<head>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "mystyle.css" %}">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+function sameOrigin(url) {
+    // test that a given url is a same-origin URL
+    // url could be relative or scheme relative or absolute
+    var host = document.location.host; // host + port
+    var protocol = document.location.protocol;
+    var sr_origin = '//' + host;
+    var origin = protocol + sr_origin;
+    // Allow absolute or scheme relative URLs to same origin
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+        // or any other URL that isn't scheme relative or absolute i.e relative.
+        !(/^(\/\/|http:|https:).*/.test(url));
+}
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+            // Send the token to same-origin, relative URLs only.
+            // Send the token only if the method warrants CSRF protection
+            // Using the CSRFToken value acquired earlier
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+
+$(document).ready(function(){
+	$( "#create_new_lecture" ).dialog({
+    		autoOpen: false,
+    		show: 'fade',
+    		resizable: false,
+    		position: 'center',
+    		//stack: true,
+    		height: 'auto',
+    		width: 'auto',
+    		//modal: true
+	});
+});
+
+function fetch_course_sections(){
+	$.ajax({
+		crossDomain: false,
+		type: "GET",
+		url: "{% url 'tutors:fetch_course_sections' course.id %}",
+		dataType: 'json',
+		success: function(data){
+				var obj;
+			 	for(var i=0; i<data.length; i++){
+			 		obj=data[i];
+			 		$("#lecture_sections").append(new Option(obj.fields.course_section_name, obj.fields.course_section_name))
+			 	}
+			 },
+		error: function(data){
+				alert("Error");
+		       }
+	});
+}
+
+function create_new_lecture(){
+	fetch_course_sections();
+	$("#create_new_lecture").dialog('open');
+}
+</script>
+</head>
+<body>
+<form id="create_new_lecture" title="Create Lecture" style="display:none;" action="{% url 'tutors:create_new_lecture' course.id %}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<table>
+	<tr><td>Lecture Name: </td><td><input type="text" name="lecture_name"></input></td></tr>
+	<tr><td>Lecture Description: </td><td><input type="text" name="lecture_description"></input></td></tr>
+	<tr><td>Select Section: </td><td>
+	<select id="lecture_sections" name="lecture_section">
+		<option value="Select">Select</option>
+	</select></td></tr>
+	<tr><td>Want to create new section::</td><td><input type="text" name="new_course_section"></input></td></tr>
+	<tr><td>Lecture Video: </td><td><input type="file" name="lecture_video"></input></td></tr>
+	</table>
+	<br>
+	<center><input type="submit" value="Create"></input></center>
+</form>
+
+
+<div class="topbar-lecture">
+<div class="logo-div">
+<a href="#" class="logo-link"></a>
+</div>
+</div>
+
+<div class="topbanner">
+<div class="topbanner-left"><a class="tbleft-anchor" href="#">{{ course.course_category.course_category_name }}</a>
+</div>
+<div class="topbanner-right">
+<div class="tbright-top">{{ course.course_name }}</div>
+<div class="tbright-bottom">By- {{ course.course_created_by.user_name }}</div>
+</div>
+</div>
+
+<div class="full-body">
+<div class="nav-bar">
+<ul class="nav-bar-list">
+<li class="nav-bar-item"> <a class="list-link" href="#">one</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">two</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">three</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">four</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">five</a></li>
+</ul>
+</div>
+
+<div class="lecture-body">
+<h2 class="top-video-heading">Video Lectures</h2>
+<button onclick="create_new_lecture()" style="float:right;">Create New Lecture</button><br></br>
+
+{% if course_lectures %}
+<hr></hr>
+{% for course_section, lectures in course_lectures.iteritems %}
+<div>
+<h3>
+<span class="arrow-hor"> </span>{{ course_section.course_section_name }}
+</h3><br>
+<h5>
+	{% if lectures %}
+	<ul>
+		{% for lecture in lectures %}
+			<li>
+				{{ lecture.lecture_name }}
+			</li>
+		{% endfor %}
+	</ul>	
+	{% else %}
+		<h5>No lectures in this section yet.</h5>
+	{% endif %}
+</h5>
+</div>
+{% endfor %}
+{% else %}
+	<h3>No course setion yet..</h3>
+{% endif %}
+</div>
+</div>
+</body>
+</html>

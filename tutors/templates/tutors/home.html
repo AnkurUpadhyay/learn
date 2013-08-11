@@ -1,0 +1,123 @@
+<html>
+<head>
+</head>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+var maximum_created_course_id = "{{maximum_created_course_id}}";
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+function sameOrigin(url) {
+    // test that a given url is a same-origin URL
+    // url could be relative or scheme relative or absolute
+    var host = document.location.host; // host + port
+    var protocol = document.location.protocol;
+    var sr_origin = '//' + host;
+    var origin = protocol + sr_origin;
+    // Allow absolute or scheme relative URLs to same origin
+    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+        // or any other URL that isn't scheme relative or absolute i.e relative.
+        !(/^(\/\/|http:|https:).*/.test(url));
+}
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+            // Send the token to same-origin, relative URLs only.
+            // Send the token only if the method warrants CSRF protection
+            // Using the CSRFToken value acquired earlier
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+$(document).ready(function(){
+	$( "#create_new_course" ).dialog({
+    		autoOpen: false,
+    		show: 'fade',
+    		resizable: false,
+    		position: 'center',
+    		//stack: true,
+    		height: 'auto',
+    		width: 'auto',
+    		//modal: true
+	});
+});
+
+function fetch_course_categories(){
+	$.ajax({
+		crossDomain: false,
+		type: "GET",
+		url: "{% url 'tutors:fetch_course_categories' %}",
+		dataType: 'json',
+		success: function(data){
+				var obj;
+			 	for(var i=0; i<data.length; i++){
+			 		obj=data[i];
+			 		$("#course_categories").append(new Option(obj.fields.course_category_name, obj.fields.course_category_name))
+			 	}
+			 },
+		error: function(data){
+				alert("Error");
+		       }
+	});
+}
+
+function create_new_course(event){
+	fetch_course_categories();
+	$("#create_new_course").dialog('open');
+}
+</script>
+<body>
+<a href="#" onclick="create_new_course()">Create New Course</a><br></br>
+{% if course_created_list %}
+	<h5> Courses created by you </h5>
+	<ul id="courses_created" name="courses_created">
+		{% for course in course_created_list %}
+			<li>
+				<h5><a href="{% url 'tutors:course_home' course.id %}">{{ course.course_name }}</a></h5>
+			</li>
+		{% endfor %}
+	</ul>	
+{% else %}
+	<h5>You haven't created any courses</h5>
+{% endif %}
+</ul>
+<form id="create_new_course" title="Create Course" style="display:none;" action="{% url 'tutors:create_new_course' user_id %}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	<table>
+	<tr><td>Course Name: </td><td><input type="text" name="course_name"></input></td></tr>
+	<tr><td>Course Description: </td><td><input type="text" name="course_description"></input></td></tr>
+	<tr><td>Select Category: </td><td>
+	<select id="course_categories" name="course_category">
+		<option value="Select">Select</option>
+	</select></td></tr>
+	<tr><td>Introduction Video: </td><td><input type="file" name="course_introduction_video"></input></td></tr>
+	</table>
+	<br>
+	<center><input type="submit" value="Create"></input></center>
+</form>
+</body>
+</html>
