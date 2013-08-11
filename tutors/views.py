@@ -4,10 +4,10 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from Insert_Into_Database import Insert_Into_Database
-from Fetch_From_Database import Fetch_From_Database
-from Course_Fetch import Course_Fetch
-from Course_Insert import Course_Insert
+from User.Insert_Into_Database import Insert_Into_Database
+from User.Fetch_From_Database import Fetch_From_Database
+from Course.Course_Fetch import Course_Fetch
+from Course.Course_Insert import Course_Insert
 from django.utils import simplejson
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Template
