@@ -7,9 +7,6 @@ from models import Course_Lecture_Details
 from models import Lecture_Question_Details
 from models import Question_Answer_Details
 from models import Answer_Comment_Details
-from models import Lecture_Problems
-from models import Problem_Choices
-from models import Problem_Solutions
 from models import Course_Sections
 from Insert_Into_Database import Insert_Into_Database
 from Fetch_From_Database import Fetch_From_Database

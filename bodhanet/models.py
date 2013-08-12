@@ -84,20 +84,53 @@ class Answer_Comment_Details(models.Model):
 	def __unicode__(self):
 		return self.comment_text
 		
-class Lecture_Problems(models.Model):
-	lecture = models.ForeignKey(Course_Lecture_Details)
-	problem_text = models.CharField(max_length=1000)
+class Course_Problemset(models.Model):
+	course=models.ForeignKey(Course_Details)
+	problemset_name=models.CharField(max_length=500)
+	problemset_description=models.CharField(max_length=1000)
 	def __unicode__(self):
-		return problem_text
-	
-class Problem_Choices(models.Model):
-	problem = models.ForeignKey(Lecture_Problems)
-	choice_text = models.CharField(max_length=500)
+		return self.problemset_name
+		
+class Problemset_Problems(models.Model):
+	problemset=models.ForeignKey(Course_Problemset)
+	problem_text=models.CharField(max_length=1000)
 	def __unicode__(self):
-		return self.choice_text
-	
-class Problem_Solutions(models.Model):
-	problem = models.ForeignKey(Lecture_Problems)
-	correct_choice = models.ForeignKey(Problem_Choices)
+		return self.problem_text
+		
+class Problemset_Problem_Choices(models.Model):
+	problem=models.ForeignKey(Problemset_Problems)
+	choice_text=models.CharField(max_length=1000)
+	def __unicode__(self):
+		return self.choice_text	
+
+class Problemset_Problem_Solutions(models.Model):
+	problem=models.ForeignKey(Problemset_Problems)
+	correct_choice=models.ForeignKey(Problemset_Problem_Choices)
+	def __unicode__(self):
+		return self
+
+class Lecture_Quiz(models.Model):
+	lecture=models.ForeignKey(Course_Lecture_Details)
+	quiz_name=models.CharField(max_length=500)
+	quiz_description=models.CharField(max_length=1000)
+	def __unicode__(self):
+		return self.quiz_name
+		
+class Quiz_Problems(models.Model):
+	quiz=models.ForeignKey(Lecture_Quiz)
+	problem_text=models.CharField(max_length=1000)
+	def __unicode__(self):
+		return self.problem_text
+		
+class Quiz_Problem_Choices(models.Model):
+	problem=models.ForeignKey(Quiz_Problems)
+	choice_text=models.CharField(max_length=1000)
+	def __unicode__(self):
+		return self.choice_text	
+
+class Quiz_Problem_Solutions(models.Model):
+	problem=models.ForeignKey(Quiz_Problems)
+	correct_choice=models.ForeignKey(Quiz_Problem_Choices)
+	tutor_explanation=models.CharField(max_length=1000)
 	def __unicode__(self):
 		return self

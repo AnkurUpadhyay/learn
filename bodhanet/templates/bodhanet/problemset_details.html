@@ -1,0 +1,64 @@
+<html>
+<head>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "mystyle.css" %}">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+</head>
+
+<body>
+<div class="topbar-lecture">
+<div class="logo-div">
+<a href="#" class="logo-link"></a>
+</div>
+</div>
+
+<div class="topbanner">
+<div class="topbanner-left"><a class="tbleft-anchor" href="#">{{ course.course_category.course_category_name }}</a>
+</div>
+<div class="topbanner-right">
+<div class="tbright-top">{{ course.course_name }}</div>
+<div class="tbright-bottom">By- {{ course.course_created_by.user_name }}</div>
+</div>
+</div>
+
+<div class="full-body">
+<div class="nav-bar">
+<ul class="nav-bar-list">
+<li class="nav-bar-item"> <a class="list-link" href="#">one</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">two</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">three</a></li>
+<li class="nav-bar-item"><a class="list-link" href="{% url 'bodhanet:fetch_course_problemset' course.id %}">Problem Sets</a></li>
+<li class="nav-bar-item"><a class="list-link" href="#">five</a></li>
+</ul>
+</div>
+
+<div class="lecture-body">
+<h2 class="top-video-heading">{{ problemset.problemset_name  }}</h2>
+
+
+{% if problemset_problems_list  %}
+<form>
+{% for problem, problem_choices in problemset_problems_list.iteritems %}
+	<ol>
+		<li>	
+			{{ problem.problem_text  }}<br>
+			{% if problem_choices %}
+				<ol>
+						{% for choice in problem_choices %}
+						<li>
+							<input type="checkbox">{{ choice.choice_text }}</input><br>
+						</li>
+						{% endfor  %}
+				</ol>
+			{% endif %}
+		</li>
+	</ol>
+{% endfor %}
+</form>
+{% else %}
+	<h5>No questions in this assignment </h5>
+{% endif %}
+
+</body>
+</html>

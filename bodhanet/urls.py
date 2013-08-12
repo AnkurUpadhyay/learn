@@ -9,4 +9,6 @@ urlpatterns = patterns('',
 	url(r'^course_home/(?P<course_id>\d+)/$', views.course_home, name='course_home'),
 	url(r'^(?P<course_id>\d+)/fetch_course_sections/$', views.fetch_course_sections, name='fetch_course_sections'),
 	url(r'^(?P<course_id>\d+)/create_new_lecture/$', views.create_new_lecture, name='create_new_lecture'),
+	url(r'^(?P<course_id>\d+)/fetch_course_problemset/$', views.fetch_course_problemset, name='fetch_course_problemset'),
+	url(r'^(?P<course_id>\d+)/(?P<problemset_id>\d+)/fetch_problemset_problems/$', views.fetch_problemset_problems, name='fetch_problemset_problems'),
 )

@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from Insert_Into_Database import Insert_Into_Database
 from Fetch_From_Database import Fetch_From_Database
+from Course_Problemset_Fetch import Course_Problemset_Fetch
 from Course_Fetch import Course_Fetch
 from Course_Insert import Course_Insert
 from django.utils import simplejson
@@ -65,9 +66,24 @@ def fetch_course_categories(request):
 	return http.HttpResponse(categories, mimetype=u'application/javascript')
 	
 def fetch_course_sections(request, course_id):
-	print("fetching course sections")
 	course_fetch=Course_Fetch()
 	course_section_list=course_fetch.fetch_course_sections(course_id)
 	sections=serializers.serialize("json", course_section_list)
-	print(sections)
 	return http.HttpResponse(sections, mimetype=u'application/javascript')
+	
+def fetch_course_problemset(request, course_id):
+	course_problemset_fetch=Course_Problemset_Fetch()
+	course_fetch=Course_Fetch()
+	course=course_fetch.fetch_course(course_id)
+	course_problemset_list=course_problemset_fetch.fetch_course_problemsets(course_id)
+	context={'course_problemset_list': course_problemset_list, 'course': course}
+	return render(request, 'bodhanet/course_problemset.html', context)
+	
+def fetch_problemset_problems(request, problemset_id, course_id):
+	course_problemset_fetch=Course_Problemset_Fetch()
+	course_fetch=Course_Fetch()
+	course=course_fetch.fetch_course(course_id)
+	problemset_problems_list=course_problemset_fetch.fetch_problemset_problems(problemset_id)
+	problemset=course_problemset_fetch.fetch_problemset(problemset_id)
+	context={'problemset_problems_list': problemset_problems_list, 'course': course, 'problemset': problemset}
+	return render(request, 'bodhanet/problemset_details.html', context)
